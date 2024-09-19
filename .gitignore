@@ -25,4 +25,15 @@ yarn-error.log*
 *.lock
 package-lock.json
 
-.idea
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore IDE-specific files
+*.vscode/
+.idea/
+

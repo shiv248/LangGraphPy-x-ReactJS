@@ -1,72 +1,84 @@
 import React, { useState, useEffect, ChangeEvent, KeyboardEvent, useRef } from 'react';
+import { useWebSocket } from './services/useWebSocket';
 import './App.css';
 
 const App: React.FC = () => {
-  const [messages, setMessages] = useState<{ user: string, msg: string }[]>([]);
-  const [input, setInput] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null); // Ref to track the end of messages
+    const [messages, setMessages] = useState<{ user: string, msg: string }[]>([]);
+    const [input, setInput] = useState('');
+    const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws');
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(event.target.value);
-  };
+    useEffect(() => {
+        if (response) {
+            // Add bot's response to messages when it's received from the server
+            setMessages((prevMessages) => [...prevMessages, { user: 'Bot', msg: response }]);
+        }
+    }, [response]);
 
-  const handleSubmit = () => {
-    if (input.trim()) {
-      const userMessage = { user: 'User', msg: input };
-      const botMessage = { user: 'Bot', msg: input };
+    const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        setInput(event.target.value);
+    };
 
-      // Append both user's and bot's messages to the conversation
-      const updatedMessages = [...messages, userMessage, botMessage];
-      setMessages(updatedMessages);
+    const handleSubmit = () => {
+        if (input.trim()) {
+            const userMessage = { user: 'User', msg: input };
 
-      // Clear the input
-      setInput('');
-    }
-  };
+            // Add user's message to the conversation
+            setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-  // Auto-scroll to the bottom when messages are updated
-  useEffect(() => {
-    // Delay the scroll to ensure new content is rendered
-    const timer = setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+            // Clear the input
+            setInput('');
 
-    return () => clearTimeout(timer); // Clean up timer
-  }, [messages]);
+            if (isOpen) {
+                sendMessage(input); // Send the message to the server
+            }
+        }
+    };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault(); // Prevent newline insertion
-      handleSubmit(); // Submit the form
-    }
-  };
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
 
-  return (
-      <div className="App">
-        <div className="chat-container">
-          <div className="messages">
-            {messages.map((msg, index) => (
-                <div key={index} className={msg.user === 'User' ? 'message user' : 'message bot'}>
-                  <strong>{msg.user}: </strong>
-                  <br />
-                  {msg.msg}
+        return () => clearTimeout(timer);
+    }, [messages]);
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            handleSubmit();
+        }
+    };
+
+    return (
+        <div className="App">
+            <div className="chat-header">
+                <b>LangGraph-Python 🤝 ReactJS</b>
+            </div>
+            <div className="chat-container">
+                <div className="messages">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={msg.user === 'User' ? 'message user' : 'message bot'}>
+                            <strong>{msg.user}: </strong>
+                            <br/>
+                            {msg.msg}
+                        </div>
+                    ))}
+                    <div ref={messagesEndRef}/>
                 </div>
-            ))}
-            <div ref={messagesEndRef} /> {/* Empty div to track the end of the messages */}
-          </div>
-          <form className="chat-form" onSubmit={(e) => e.preventDefault()}>
-          <textarea
-              value={input}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Type or paste your message..."
-              rows={4} // Allows multiple lines
-          />
-            <button type="button" onClick={handleSubmit}>Send</button>
-          </form>
+                <form className="chat-form" onSubmit={(e) => e.preventDefault()}>
+                    <textarea
+                        value={input}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Type or paste your message..."
+                        rows={4}
+                    />
+                    <button type="button" onClick={handleSubmit}>Send</button>
+                </form>
+            </div>
         </div>
-      </div>
-  );
+    );
 }
 
 export default App;
