@@ -1,0 +1,123 @@
+/* Base styles */
+body {
+  background-color: #191923; /* New background color */
+  color: #fbfef9; /* New light text color */
+  font-family: "system-ui", Courier, monospace; /* Retro pixel-like font */
+  margin: 0;
+  padding: 0;
+}
+
+/* App container */
+.App {
+  max-width: 600px;
+  margin: 2vh auto;
+  padding: 20px;
+  border: 5px solid #0e79b2; /* New accent color */
+  border-radius: 10px;
+  background: #0b0909; /* Dark gray background */
+}
+
+/* Chat container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  background: #1e1e1e; /* Slightly lighter dark background for contrast */
+  border: 2px solid #0e79b2; /* New accent color */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Messages */
+/* Custom scrollbars for .messages container */
+.messages {
+  display: flex;
+  flex-direction: column; /* Stack messages vertically */
+  flex: 1;
+  overflow-y: auto; /* Allows vertical scrolling */
+  padding: 10px;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ffffff #191923; /* Firefox */
+}
+
+/* Scrollbar styling for WebKit browsers (Chrome, Safari) */
+.messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: #191923; /* bar background */
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background-color: #ffffff; /* Thumb color */
+  border-radius: 10px;
+  border: 2px solid #191923; /* Adds padding around the thumb */
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background-color: #ffffff; /* Darker color on hover */
+}
+
+/* Message bubbles */
+.message {
+  display: inline-block;
+  max-width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+  background: #0d0b0b;
+  border: 2px solid #0e79b2;
+  color: #fbfef9;
+  font-size: 14px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+  white-space: pre-wrap; /* Retain spaces and newlines */
+}
+
+
+/* User-specific styles */
+.message.user {
+  align-self: flex-end; /* Align user messages to the right */
+  background: #0d0b0b; /* Darker gray for user messages */
+}
+
+/* Bot-specific styles */
+.message.bot {
+  align-self: flex-start; /* Align bot messages to the left */
+  background: #0d0b0b; /* Darker gray for bot messages */
+}
+
+
+/* Chat form */
+.chat-form {
+  display: flex;
+  border-top: 2px solid #0e79b2;
+}
+
+.chat-form textarea {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 0;
+  background: #2c2c2c;
+  color: #fbfef9;
+  font-size: 14px;
+  font-family: "system-ui", Courier, monospace; /* Ensure consistent font styling */
+  resize: none; /* Prevent manual resizing */
+  height: 50px; /* Adjust height if needed */
+  line-height: 1.4; /* Improve readability */
+}
+
+.chat-form button {
+  padding: 10px;
+  background: #0e79b2;
+  color: #fbfef9;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.chat-form button:hover {
+  background: #0c5a8a;
+}
