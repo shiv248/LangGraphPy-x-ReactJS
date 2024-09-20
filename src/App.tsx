@@ -8,17 +8,14 @@ const App: React.FC = () => {
     const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Update botTyping when new tokens arrive
     useEffect(() => {
         if (response) {
             setMessages((prevMessages) => {
-                // If the last message is from the bot, keep appending tokens to it
                 const lastMessage = prevMessages[prevMessages.length - 1];
                 if (lastMessage && lastMessage.user === 'Bot') {
                     lastMessage.msg = response;
                     return [...prevMessages];
                 } else {
-                    // Add a new message from the bot if one doesn't exist
                     return [...prevMessages, { user: 'Bot', msg: response }];
                 }
             });
@@ -33,14 +30,13 @@ const App: React.FC = () => {
         if (input.trim()) {
             const userMessage = { user: 'User', msg: input };
 
-            // Add user's message to the conversation
             setMessages((prevMessages) => [...prevMessages, userMessage]);
 
             // Clear the input
             setInput('');
 
             if (isOpen) {
-                sendMessage(input); // Send the message to the server
+                sendMessage(input);
             }
         }
     };

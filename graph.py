@@ -5,6 +5,7 @@ from typing import Annotated, TypedDict
 from langchain_core.messages import BaseMessage, HumanMessage
 from langgraph.graph import START, END, StateGraph, MessagesState
 from langgraph.graph.message import AnyMessage, add_messages
+from langgraph.checkpoint.memory import MemorySaver
 
 from dotenv import load_dotenv
 from langchain_fireworks import ChatFireworks
@@ -35,5 +36,7 @@ graph.add_edge(START, "modelNode")
 graph.add_node("modelNode", _call_model)
 graph.add_edge("modelNode", END)
 
-graph_runnable = graph.compile()
+memory = MemorySaver()
+
+graph_runnable = graph.compile(checkpointer=memory)
 

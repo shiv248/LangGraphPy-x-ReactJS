@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { generate } from "random-words";
 
 export const useWebSocket = (url: string) => {
     const [response, setResponse] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isBotResponseComplete, setIsBotResponseComplete] = useState<boolean>(false);
     const socketRef = useRef<WebSocket | null>(null);
+    const wordUUIDRef = useRef<string>((generate({ exactly: 4 }) as string[]).join('-'));
 
     useEffect(() => {
         const socket = new WebSocket(url);
@@ -13,6 +15,8 @@ export const useWebSocket = (url: string) => {
         socket.onopen = () => {
             console.log('WebSocket connection opened');
             setIsOpen(true);
+            // Send the UUID with init flag to the server
+            socket.send(JSON.stringify({ uuid: wordUUIDRef.current, init: true }));
         };
 
         socket.onmessage = (event) => {
@@ -21,12 +25,10 @@ export const useWebSocket = (url: string) => {
                 console.log('Received from server:', data);
 
                 if (data.on_chat_model_stream) {
-                    // Append the token to the response
                     setResponse((prevResponse) => prevResponse + data.on_chat_model_stream);
                 }
 
                 if (data.on_chat_model_end) {
-                    // Bot response is complete
                     setIsBotResponseComplete(true);
                 }
             } catch (error) {
@@ -52,9 +54,14 @@ export const useWebSocket = (url: string) => {
 
     const sendMessage = (message: string) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            socketRef.current.send(message);
-            setIsBotResponseComplete(false); // Reset the response state for the next message
-            setResponse(''); // Clear the current response when a new message is sent
+            const payload = {
+                uuid: wordUUIDRef.current,
+                message,
+                init: false
+            };
+            socketRef.current.send(JSON.stringify(payload));
+            setIsBotResponseComplete(false);
+            setResponse('');
         } else {
             console.log('WebSocket connection is not open');
         }

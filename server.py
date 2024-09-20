@@ -8,37 +8,27 @@ from graph import graph_runnable
 
 app = FastAPI()
 
-message_history = [AIMessage("Hi how can I help you?")]
-
-async def invoke_our_graph(websocket: WebSocket, data: str):
-    message_history.append(HumanMessage(data))
-    initial_input = {"messages": message_history}
-    thread_config = {"configurable": {"thread_id": "1"}}
+async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
+    initial_input = {"messages": data}
+    thread_config = {"configurable": {"thread_id": user_uuid}}
     final_text = ""
 
     async for event in graph_runnable.astream_events(initial_input, thread_config, version="v2"):
         kind = event["event"]
-        print(f"Event: {kind}")
 
         if kind == "on_chat_model_stream":
-            # Get the streamed content chunk
             addition = event["data"]["chunk"].content
 
-            # Update final_text progressively with new content
             final_text += addition
 
             if addition:
-                # Send the streamed content as a JSON object
                 message = json.dumps({"on_chat_model_stream": addition})
                 await websocket.send_text(message)
 
         elif kind == "on_chat_model_end":
-            # Send an end signal to the client
             message = json.dumps({"on_chat_model_end": True})
             print(f"Sent to client: {final_text}")
             await websocket.send_text(message)
-            message_history.append(AIMessage(final_text))
-
 
         elif kind == "on_custom_event":
             print(event["name"], event["data"])
@@ -46,18 +36,29 @@ async def invoke_our_graph(websocket: WebSocket, data: str):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()  # Accept WebSocket connection
+    await websocket.accept()
     try:
         while True:
-            data = await websocket.receive_text()  # Receive message from client
+            data = await websocket.receive_text()
             print(f"Received: {data}")
 
-            # Instead of echoing, run the asynchronous number generator
-            await invoke_our_graph(websocket, data)
+            try:
+                payload = json.loads(data)
+                uuid = payload.get("uuid")
+                message = payload.get("message")
+                init = payload.get("init", False)
+
+                if init:
+                    print(f"Initialization received. UUID: {uuid}")
+                else:
+                    if message:
+                        await invoke_our_graph(websocket, message, uuid)
+            except json.JSONDecodeError:
+                pass
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        await websocket.close()  # Close WebSocket connection
+        await websocket.close()
 
 if __name__ == "__main__":
     import uvicorn
