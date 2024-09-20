@@ -4,7 +4,10 @@ import EE from './components/easter_egg/ee';
 import './App.css';
 
 const App: React.FC = () => {
-    const [messages, setMessages] = useState<{ user: string, msg: string }[]>([]);
+    // Initial bot message added to the state
+    const [messages, setMessages] = useState<{ user: string, msg: string }[]>([
+        { user: 'Bot', msg: 'Welcome! How can I be of service today?' }
+    ]);
     const [input, setInput] = useState('');
     const [showEE, setShowEE] = useState(false);
     const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws', setShowEE);
