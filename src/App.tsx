@@ -8,10 +8,20 @@ const App: React.FC = () => {
     const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    // Update botTyping when new tokens arrive
     useEffect(() => {
         if (response) {
-            // Add bot's response to messages when it's received from the server
-            setMessages((prevMessages) => [...prevMessages, { user: 'Bot', msg: response }]);
+            setMessages((prevMessages) => {
+                // If the last message is from the bot, keep appending tokens to it
+                const lastMessage = prevMessages[prevMessages.length - 1];
+                if (lastMessage && lastMessage.user === 'Bot') {
+                    lastMessage.msg = response;
+                    return [...prevMessages];
+                } else {
+                    // Add a new message from the bot if one doesn't exist
+                    return [...prevMessages, { user: 'Bot', msg: response }];
+                }
+            });
         }
     }, [response]);
 
@@ -35,6 +45,7 @@ const App: React.FC = () => {
         }
     };
 
+    // Scroll to the bottom when new messages are added
     useEffect(() => {
         const timer = setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,6 +64,7 @@ const App: React.FC = () => {
     return (
         <div className="App">
             <div className="chat-header">
+                <div className={`connection-status ${isOpen ? 'online' : 'offline'}`}></div>
                 <b>LangGraph-Python 🤝 ReactJS</b>
             </div>
             <div className="chat-container">
@@ -60,11 +72,11 @@ const App: React.FC = () => {
                     {messages.map((msg, index) => (
                         <div key={index} className={msg.user === 'User' ? 'message user' : 'message bot'}>
                             <strong>{msg.user}: </strong>
-                            <br/>
+                            <br />
                             {msg.msg}
                         </div>
                     ))}
-                    <div ref={messagesEndRef}/>
+                    <div ref={messagesEndRef} />
                 </div>
                 <form className="chat-form" onSubmit={(e) => e.preventDefault()}>
                     <textarea

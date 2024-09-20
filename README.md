@@ -48,4 +48,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 # Python install
 
-```pip install fastapi uvicorn websockets```
+```pip install fastapi uvicorn websockets langgraph langchain-fireworks python-dotenv```
+
+then
+
+`uvicorn server:app --reload --host 0.0.0.0 --port 8000`

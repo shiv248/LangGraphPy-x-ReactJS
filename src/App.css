@@ -16,12 +16,32 @@ body {
 }
 
 .chat-header {
-  text-align: center;
+  display: grid;
+  grid-auto-flow: column;
   margin-bottom: 5px;
 }
 
 .chat-header b {
   color: #ffffff;
+  margin-left: -10px;
+}
+
+.connection-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d32f2f; /* Default: Red (offline) */
+  border: 2px solid #ffffff;
+  transition: background-color 0.3s ease;
+  margin-top: 3px;
+}
+
+.connection-status.online {
+  background-color: #66bb6a; /* Green (online) */
+}
+
+.connection-status.offline {
+  background-color: #d32f2f; /* Red (offline) */
 }
 
 .chat-container {
