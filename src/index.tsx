@@ -5,7 +5,7 @@ import App from './App';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-// causes double rendering
+// causes double initial rendering
 // root.render(
 //   <React.StrictMode>
 //     <App />

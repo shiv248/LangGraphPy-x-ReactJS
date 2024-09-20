@@ -1,0 +1,8 @@
+.pet {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    font-size: 40px; /* Emoji size */
+    pointer-events: none; /* Make sure it doesn't block interactions */
+    transition: transform 0.1s ease-out; /* Smooth movement */
+}

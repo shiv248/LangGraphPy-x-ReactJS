@@ -18,21 +18,20 @@ async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
 
         if kind == "on_chat_model_stream":
             addition = event["data"]["chunk"].content
-
             final_text += addition
-
             if addition:
                 message = json.dumps({"on_chat_model_stream": addition})
                 await websocket.send_text(message)
 
         elif kind == "on_chat_model_end":
             message = json.dumps({"on_chat_model_end": True})
-            print(f"Sent to client: {final_text}")
+            print(f"Sent to client - {user_uuid}: {final_text}")
             await websocket.send_text(message)
 
         elif kind == "on_custom_event":
-            print(event["name"], event["data"])
-            await websocket.send_text(event["data"]["input"])
+            message = json.dumps({event["name"]: event["data"]})
+            await websocket.send_text(message)
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -47,14 +46,13 @@ async def websocket_endpoint(websocket: WebSocket):
                 uuid = payload.get("uuid")
                 message = payload.get("message")
                 init = payload.get("init", False)
-
                 if init:
                     print(f"Initialization received. UUID: {uuid}")
                 else:
                     if message:
                         await invoke_our_graph(websocket, message, uuid)
-            except json.JSONDecodeError:
-                pass
+            except json.JSONDecodeError as e:
+                print(f"Json encoding error - {e}")
     except Exception as e:
         print(f"Error: {e}")
     finally:

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, ChangeEvent, KeyboardEvent, useRef } from 'react';
 import { useWebSocket } from './services/useWebSocket';
+import EE from './components/easter_egg/ee';
 import './App.css';
 
 const App: React.FC = () => {
     const [messages, setMessages] = useState<{ user: string, msg: string }[]>([]);
     const [input, setInput] = useState('');
-    const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws');
+    const [showEE, setShowEE] = useState(false);
+    const { response, isOpen, sendMessage } = useWebSocket('ws://localhost:8000/ws', setShowEE);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -29,10 +31,7 @@ const App: React.FC = () => {
     const handleSubmit = () => {
         if (input.trim()) {
             const userMessage = { user: 'User', msg: input };
-
             setMessages((prevMessages) => [...prevMessages, userMessage]);
-
-            // Clear the input
             setInput('');
 
             if (isOpen) {
@@ -41,7 +40,6 @@ const App: React.FC = () => {
         }
     };
 
-    // Scroll to the bottom when new messages are added
     useEffect(() => {
         const timer = setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,6 +82,7 @@ const App: React.FC = () => {
                     />
                     <button type="button" onClick={handleSubmit}>Send</button>
                 </form>
+                {showEE && <EE />}
             </div>
         </div>
     );
