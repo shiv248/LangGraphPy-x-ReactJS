@@ -1,9 +1,13 @@
+# server.py
+
 import json
 import os
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from graph import graph_runnable
+from graph import invoke_our_graph
+from datetime import datetime
+from cust_logger import logger
 
 app = FastAPI()
 
@@ -20,31 +24,6 @@ async def serve_frontend(full_path: str):
         return FileResponse(file_path)
     return FileResponse(os.path.join("frontend", "build", "index.html"))
 
-async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
-    initial_input = {"messages": data}
-    thread_config = {"configurable": {"thread_id": user_uuid}}
-    final_text = ""
-
-    async for event in graph_runnable.astream_events(initial_input, thread_config, version="v2"):
-        kind = event["event"]
-
-        if kind == "on_chat_model_stream":
-            addition = event["data"]["chunk"].content
-            final_text += addition
-            if addition:
-                message = json.dumps({"on_chat_model_stream": addition})
-                await websocket.send_text(message)
-
-        elif kind == "on_chat_model_end":
-            message = json.dumps({"on_chat_model_end": True})
-            print(f"Sent to client - {user_uuid}: {final_text}")
-            await websocket.send_text(message)
-
-        elif kind == "on_custom_event":
-            message = json.dumps({event["name"]: event["data"]})
-            await websocket.send_text(message)
-
-
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -52,7 +31,7 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
-            print(f"Received: {data}")
+            logger.info(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "received": json.loads(data)}))
 
             try:
                 payload = json.loads(data)
@@ -60,23 +39,22 @@ async def websocket_endpoint(websocket: WebSocket):
                 message = payload.get("message")
                 init = payload.get("init", False)
                 if init:
-                    print(f"Initialization received. UUID: {user_uuid}")
+                    logger.info(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "op": "Initializing ws with client."}))
                 else:
                     if message:
                         await invoke_our_graph(websocket, message, user_uuid)
             except json.JSONDecodeError as e:
-                print(f"Json encoding error - {e}")
+                logger.error(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "op": f"JSON encoding error - {e}"}))
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "op": f"Error: {e}"}))
     finally:
-        # Print the UUID when the connection closes
         if user_uuid:
-            print(f"Connection closed for UUID: {user_uuid}")
+            logger.info(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "op": "Closing connection."}))
         try:
             await websocket.close()
         except RuntimeError as e:
-            print(f"WebSocket close error: {e}")
+            logger.error(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "op": f"WebSocket close error: {e}"}))
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True, log_level="warning")

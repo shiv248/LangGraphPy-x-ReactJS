@@ -5,3 +5,4 @@ aiofiles
 python-dotenv
 langchain-fireworks
 langgraph
+colorama

@@ -2,14 +2,14 @@ import getpass
 import os
 from typing import Annotated, TypedDict
 
-from langchain_core.messages import BaseMessage, HumanMessage
 from langchain_core.callbacks import adispatch_custom_event
 from langchain_core.runnables.config import RunnableConfig
-from langgraph.graph import START, END, StateGraph, MessagesState
+from langgraph.graph import START, END, StateGraph
 from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.checkpoint.memory import MemorySaver
 
 from dotenv import load_dotenv
+from fastapi import WebSocket
 from langchain_fireworks import ChatFireworks
 
 load_dotenv()
@@ -51,4 +51,33 @@ graph.add_edge("modelNode", END)
 memory = MemorySaver()
 
 graph_runnable = graph.compile(checkpointer=memory)
+
+
+async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
+    import json
+    from datetime import datetime
+    from cust_logger import logger
+    initial_input = {"messages": data}
+    thread_config = {"configurable": {"thread_id": user_uuid}}
+    final_text = ""
+
+    async for event in graph_runnable.astream_events(initial_input, thread_config, version="v2"):
+        kind = event["event"]
+
+        if kind == "on_chat_model_stream":
+            addition = event["data"]["chunk"].content
+            final_text += addition
+            if addition:
+                message = json.dumps({"on_chat_model_stream": addition})
+                await websocket.send_text(message)
+
+        elif kind == "on_chat_model_end":
+            message = json.dumps({"on_chat_model_end": True})
+            logger.info(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "llm_method": kind, "sent": final_text}))
+            await websocket.send_text(message)
+
+        elif kind == "on_custom_event":
+            message = json.dumps({event["name"]: event["data"]})
+            logger.info(json.dumps({"timestamp": datetime.now().isoformat(), "uuid": user_uuid, "llm_method": kind, "sent": message}))
+            await websocket.send_text(message)
 
