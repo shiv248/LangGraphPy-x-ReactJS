@@ -1,6 +1,10 @@
-import getpass
-import os
+import json
+from datetime import datetime
 from typing import Annotated, TypedDict
+
+from dotenv import load_dotenv
+from fastapi import WebSocket
+from langchain_fireworks import ChatFireworks
 
 from langchain_core.callbacks import adispatch_custom_event
 from langchain_core.runnables.config import RunnableConfig
@@ -8,13 +12,10 @@ from langgraph.graph import START, END, StateGraph
 from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.checkpoint.memory import MemorySaver
 
-from dotenv import load_dotenv
-from fastapi import WebSocket
-from langchain_fireworks import ChatFireworks
+from cust_logger import logger, set_files_message_color
 
 load_dotenv()
 
-# Initialize a Fireworks chat model
 llm = ChatFireworks(
   model="accounts/fireworks/models/firefunction-v2",
   temperature=0.0,
@@ -54,9 +55,7 @@ graph_runnable = graph.compile(checkpointer=memory)
 
 
 async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
-    import json
-    from datetime import datetime
-    from cust_logger import logger
+    set_files_message_color('MAGENTA')
     initial_input = {"messages": data}
     thread_config = {"configurable": {"thread_id": user_uuid}}
     final_text = ""

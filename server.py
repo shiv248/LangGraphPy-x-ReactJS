@@ -1,5 +1,3 @@
-# server.py
-
 import json
 import os
 from fastapi import FastAPI, WebSocket
@@ -7,9 +5,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from graph import invoke_our_graph
 from datetime import datetime
-from cust_logger import logger
+from cust_logger import logger, set_files_message_color
 
 app = FastAPI()
+
+set_files_message_color('purple')
 
 app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
