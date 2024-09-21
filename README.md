@@ -48,7 +48,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 # Python install
 
-```pip install fastapi uvicorn websockets langgraph langchain-fireworks python-dotenv```
+```pip install fastapi uvicorn websockets langgraph langchain-fireworks python-dotenv aiofiles```
 
 then
 

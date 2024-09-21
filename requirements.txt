@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+websockets
+aiofiles
+python-dotenv
+langchain-fireworks
+langgraph
