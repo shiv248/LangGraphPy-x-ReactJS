@@ -48,6 +48,7 @@ async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    user_uuid = None
     try:
         while True:
             data = await websocket.receive_text()
@@ -55,20 +56,26 @@ async def websocket_endpoint(websocket: WebSocket):
 
             try:
                 payload = json.loads(data)
-                uuid = payload.get("uuid")
+                user_uuid = payload.get("uuid")
                 message = payload.get("message")
                 init = payload.get("init", False)
                 if init:
-                    print(f"Initialization received. UUID: {uuid}")
+                    print(f"Initialization received. UUID: {user_uuid}")
                 else:
                     if message:
-                        await invoke_our_graph(websocket, message, uuid)
+                        await invoke_our_graph(websocket, message, user_uuid)
             except json.JSONDecodeError as e:
                 print(f"Json encoding error - {e}")
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        await websocket.close()
+        # Print the UUID when the connection closes
+        if user_uuid:
+            print(f"Connection closed for UUID: {user_uuid}")
+        try:
+            await websocket.close()
+        except RuntimeError as e:
+            print(f"WebSocket close error: {e}")
 
 if __name__ == "__main__":
     import uvicorn
