@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Default values
 FRONTEND_PORT=3000
+BACKEND_PORT=8000
+
 RUN_FRONTEND=false
 RUN_BACKEND=false
 BUILD_FRONTEND=false
@@ -11,8 +12,9 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         --frontend) RUN_FRONTEND=true ;;              # Command: ./start.sh --frontend
         --backend) RUN_BACKEND=true ;;                # Command: ./start.sh --backend
-        --build) BUILD_FRONTEND=true ;;                # Command: ./start.sh --backend --build
-        --frontend-port) FRONTEND_PORT="$2"; shift ;;
+        --build) BUILD_FRONTEND=true ;;               # Command: ./start.sh --backend --build
+        --frontend-port) FRONTEND_PORT="$2"; shift ;; # Command: ./start.sh --frontend-port 4000
+        --backend-port) BACKEND_PORT="$2"; shift ;;   # Command: ./start.sh --backend-port 9000
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift
@@ -27,13 +29,13 @@ build_frontend() {
 # Start the frontend
 start_frontend() {
     echo "Starting frontend on port $FRONTEND_PORT..."
-    (cd frontend && npm start) &
+    (cd frontend && PORT=$FRONTEND_PORT npm start) &
 }
 
 # Start the backend
 start_backend() {
-    echo "Starting backend..."
-    uvicorn server:app --host 0.0.0.0 --port 8000
+    echo "Starting backend on port $BACKEND_PORT..."
+    uvicorn server:app --host 0.0.0.0 --port $BACKEND_PORT
 }
 
 # Backend only with or without build
