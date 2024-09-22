@@ -1,3 +1,4 @@
+import sys, os
 import json
 from datetime import datetime
 from typing import Annotated, TypedDict
@@ -16,11 +17,22 @@ from cust_logger import logger, set_files_message_color
 
 load_dotenv()
 
-llm = ChatFireworks(
-  model="accounts/fireworks/models/firefunction-v2",
-  temperature=0.0,
-  max_tokens=256
-  )
+env_var_key = "FIREWORKS_API_KEY"
+model_path = os.getenv(env_var_key)
+
+if not model_path:
+    logger.fatal(f"Fatal Error: The '{env_var_key}' environment variable is missing.")
+    sys.exit(1)
+
+try:
+    llm = ChatFireworks(
+        model="accounts/fireworks/models/firefunction-v2",
+        temperature=0.0,
+        max_tokens=256
+    )
+except Exception as e:
+    logger.fatal(f"Fatal Error: Failed to initialize model: {e}")
+    sys.exit(1)
 
 # This is the default state  same as "MessageState" TypedDict but allows us accessibility to
 # custom keys to our state like user's details
@@ -59,7 +71,6 @@ async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
     initial_input = {"messages": data}
     thread_config = {"configurable": {"thread_id": user_uuid}}
     final_text = ""
-
     async for event in graph_runnable.astream_events(initial_input, thread_config, version="v2"):
         kind = event["event"]
 
