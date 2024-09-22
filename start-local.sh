@@ -22,20 +22,29 @@ done
 
 # Function to build the frontend
 build_frontend() {
-    echo "Building frontend..."
+    echo "Building frontend using \`npm run build\`..."
     (cd frontend && npm install && npm run build) || { echo "Frontend build failed"; exit 1; }
 }
 
 # Start the frontend
 start_frontend() {
     echo "Starting frontend on port $FRONTEND_PORT..."
-    (cd frontend && PORT=$FRONTEND_PORT npm start) &
+    FRONTEND_CMD="PORT=$FRONTEND_PORT npm start"
+    echo "Command :- cd frontend && $FRONTEND_CMD"
+    (cd frontend && npm install && eval "$FRONTEND_CMD")
 }
 
 # Start the backend
 start_backend() {
     echo "Starting backend on port $BACKEND_PORT..."
-    uvicorn server:app --host 0.0.0.0 --port $BACKEND_PORT
+    BACKEND_CMD="uvicorn server:app --host 0.0.0.0 --port $BACKEND_PORT --reload"
+    echo "Command: $BACKEND_CMD"
+
+    # Execute the command and check for failure
+    if ! eval "$BACKEND_CMD"; then
+        echo "Backend failed to start, did you pip install -r requirements.txt?"
+        exit 1
+    fi
 }
 
 # Backend only with or without build
@@ -53,7 +62,5 @@ if [ "$RUN_FRONTEND" = true ]; then
     exit 0
 fi
 
-# Default case: Build frontend, start frontend, and then start backend
-build_frontend                                     # Command: ./start.sh (no options)
-start_frontend
-start_backend
+# Default case: No options provided
+echo "No valid options provided. Please use '--frontend' or '--backend' or '--backend --build', optionally with '--backend-port' or '--frontend-port' "
