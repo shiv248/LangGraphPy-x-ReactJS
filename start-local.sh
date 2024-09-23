@@ -42,7 +42,7 @@ start_backend() {
 
     # Execute the command and check for failure
     if ! eval "$BACKEND_CMD"; then
-        echo "Backend failed to start, did you pip install -r requirements.txt?"
+        echo "Backend failed to start, did you 'pip install -r requirements.txt'?"
         exit 1
     fi
 }
