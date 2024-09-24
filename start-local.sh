@@ -5,20 +5,26 @@ BACKEND_PORT=8000
 
 RUN_FRONTEND=false
 RUN_BACKEND=false
-BUILD_FRONTEND=false
+BUILD_FRONTEND=true  # Default to building the frontend
 
 # Parse options
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --frontend) RUN_FRONTEND=true ;;              # Command: ./start.sh --frontend
         --backend) RUN_BACKEND=true ;;                # Command: ./start.sh --backend
-        --build) BUILD_FRONTEND=true ;;               # Command: ./start.sh --backend --build
+        --nobuild) BUILD_FRONTEND=false ;;            # Command: ./start.sh --backend --nobuild
         --frontend-port) FRONTEND_PORT="$2"; shift ;; # Command: ./start.sh --frontend-port 4000
         --backend-port) BACKEND_PORT="$2"; shift ;;   # Command: ./start.sh --backend-port 9000
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift
 done
+
+# Check for conflicting options
+if [ "$RUN_FRONTEND" = true ] && [ "$RUN_BACKEND" = true ]; then
+    echo "ERROR: Cannot run both frontend and backend in same terminal. Please choose one and open a new terminal"
+    exit 1
+fi
 
 # Function to build the frontend
 build_frontend() {
@@ -30,7 +36,7 @@ build_frontend() {
 start_frontend() {
     echo "Starting frontend on port $FRONTEND_PORT..."
     FRONTEND_CMD="PORT=$FRONTEND_PORT npm start"
-    echo "Command :- cd frontend && $FRONTEND_CMD"
+    echo "Command: cd frontend && $FRONTEND_CMD"
     (cd frontend && npm install && eval "$FRONTEND_CMD")
 }
 
@@ -42,7 +48,7 @@ start_backend() {
 
     # Execute the command and check for failure
     if ! eval "$BACKEND_CMD"; then
-        echo "Backend failed to start, did you 'pip install -r requirements.txt'?"
+        echo "Backend failed to start, have you 'pip install -r requirements.txt'?"
         exit 1
     fi
 }
@@ -50,17 +56,17 @@ start_backend() {
 # Backend only with or without build
 if [ "$RUN_BACKEND" = true ]; then
     if [ "$BUILD_FRONTEND" = true ]; then
-        build_frontend                             # Command: ./start.sh --backend --build
+        build_frontend                             # Command: ./start.sh --backend
     fi
-    start_backend                                  # Command: ./start.sh --backend
+    start_backend                                  # Command: ./start.sh --backend or ./start.sh --backend --nobuild
     exit 0
 fi
 
-# Frontend only without building
+# Frontend only
 if [ "$RUN_FRONTEND" = true ]; then
     start_frontend                                 # Command: ./start.sh --frontend
     exit 0
 fi
 
 # Default case: No options provided
-echo "No valid options provided. Please use '--frontend' or '--backend' or '--backend --build', optionally with '--backend-port' or '--frontend-port' "
+echo "No valid options provided. Please use '--frontend' or '--backend' or '--backend --nobuild', optionally with '--backend-port' or '--frontend-port' "
