@@ -46,7 +46,8 @@ const App: React.FC = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        }); // , 100); // you can add delay for scrolling, giving user a moment to read message bots message,
+                       // but looks slightly jittery
 
         return () => clearTimeout(timer);
     }, [messages]);
