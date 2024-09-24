@@ -1,4 +1,4 @@
-![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/Screenshot_2024-09-23_at_4.23.45_PM-removebg-preview.png)
+![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/8f73de1351bd3701e94d21e5381b90d82c4bacda/par-atom-logo.svg)
 
 # LangGraph Python Backend w/ React TypeScript Frontend
 
