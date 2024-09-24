@@ -9,18 +9,18 @@ responses and streaming, made easy as a template. Run via `pip install -r requir
 
 ## Background
 As _LangGraph_ develops, there will be a need to establish the optimal way to approach a seamless interaction
-between _LangGraph_ and any frontend framework. A key aspect of UI in a chat setting with LLMs is ensuring 
-that the bot is _Actively_ working on the response you sent it. Acknowledgement can take various forms, such 
-as a visual aid like a spinner, a toast, a status/progress bar, or streaming the tokens as they are being generated. 
-This is a template designed to merge core concepts between frontend and backend to provide a great  user 
+between _LangGraph_ and any frontend framework. A key aspect of UI in a chat setting with LLMs is ensuring
+that the bot is _Actively_ working on the response you sent it. Acknowledgement can take various forms, such
+as a visual aid like a spinner, a toast, a status/progress bar, or streaming the tokens as they are being generated.
+This is a template designed to merge core concepts between frontend and backend to provide a great  user
 experience for someone who doesn't have technical knowledge of LLMs and their limitations.
 
-I found great success with the streaming approach to indicate that the LLM acknowledged my message and 
-is generating a response. I used WebSockets to handle the connection and communication between the frontend 
+I found great success with the streaming approach to indicate that the LLM acknowledged my message and
+is generating a response. I used WebSockets to handle the connection and communication between the frontend
 and backend, which allowed for easy integration of _LangChain_'s [asynchronous streaming events](https://python.langchain.com/docs/how_to/streaming/#using-stream-events)
-and _React_'s useEffect hook. This setup allows the application to wait for responses from the bot while 
-simultaneously streaming the tokens as they are generated. I aimed to make it as simple and well-documented 
-as possible for anyone to clone, start, and get going on this project, including a drop-in replacement 
+and _React_'s useEffect hook. This setup allows the application to wait for responses from the bot while
+simultaneously streaming the tokens as they are generated. I aimed to make it as simple and well-documented
+as possible for anyone to clone, start, and get going on this project, including a drop-in replacement
 for your LangGraph runnable in `graph.py`, and only needing the `useWebSocket.ts` implementation for any frontend.
 
 ## Project Overview
@@ -60,16 +60,16 @@ Project Tree
 
 ### Communication
 
-The WebSocket connection allows real-time, bidirectional communication between the React frontend 
+The WebSocket connection allows real-time, bidirectional communication between the React frontend
 and the FastAPI backend server, continuously receiving messages without having to reload or make repeated requests.
-There are many ways to handle the data being sent across. It could be the message itself, a chunk of messages 
-(`msg_history`), or a structured format. I chose to go with the structured format since it allows the client 
+There are many ways to handle the data being sent across. It could be the message itself, a chunk of messages
+(`msg_history`), or a structured format. I chose to go with the structured format since it allows the client
 and server to expect certain keys in a specific order and provides flexibility for future additions to the payload.
 I opted to use JSON since it's the easiest to read and work with, but you're free to use other formats such as XML,
-YAML, CSV, Protocol Buffers (Protobuff), or BSON. In short, there is a predefined JSON structure that both sides 
-are looking for. If certain criteria are met during the exchange from either side, Front/Backend, it will trigger 
-actions within that specific side. For example, if the event kind is `on_chat_model_stream`, it should stream 
-the response to the client. Or if the client receives any changes in the socket connection, it will adjust and 
+YAML, CSV, Protocol Buffers (Protobuff), or BSON. In short, there is a predefined JSON structure that both sides
+are looking for. If certain criteria are met during the exchange from either side, Front/Backend, it will trigger
+actions within that specific side. For example, if the event kind is `on_chat_model_stream`, it should stream
+the response to the client. Or if the client receives any changes in the socket connection, it will adjust and
 render or log accordingly.
 
 Our communication exchanges:
@@ -135,39 +135,39 @@ colorama             # used for coloring logs
 #### `./start-local.sh` Options
 Please read the `start-local.sh` to understand what alias commands are running under the hood
 - **`--frontend`**:
-    - Starts the frontend application.
-    - Example:
-      ```bash
-      ./start-local.sh --frontend
-      ```
+  - Starts the frontend application.
+  - Example:
+    ```bash
+    ./start-local.sh --frontend
+    ```
 
 - **`--backend`**:
-    - Starts the backend application.
-    - Example:
-      ```bash
-      ./start-local.sh --backend
-      ```
+  - Starts the backend application.
+  - Example:
+    ```bash
+    ./start-local.sh --backend
+    ```
 
 - **`--build`** optional flag:
-    - Builds the frontend application before starting the backend. This option is only relevant to the backend.
-    - Example:
-      ```bash
-      ./start-local.sh --backend --build
-      ```
+  - Builds the frontend application before starting the backend. This option is only relevant to the backend.
+  - Example:
+    ```bash
+    ./start-local.sh --backend --build
+    ```
 
 - **`--frontend-port <port>`** optional flag:
-    - Specifies the port on which the frontend application should run. The default port is `3000`.
-    - Example:
-      ```bash
-      ./start-local.sh --frontend --frontend-port 4000
-      ```
+  - Specifies the port on which the frontend application should run. The default port is `3000`.
+  - Example:
+    ```bash
+    ./start-local.sh --frontend --frontend-port 4000
+    ```
 
 - **`--backend-port <port>`** optional flag:
-    - Specifies the port on which the backend application should run. The default port is `8000`.
-    - Example:
-      ```bash
-      ./start-local.sh --backend --backend-port 9000
-      ```
+  - Specifies the port on which the backend application should run. The default port is `8000`.
+  - Example:
+    ```bash
+    ./start-local.sh --backend --backend-port 9000
+    ```
 
 #### Starting the Application Manually
 If you prefer not to use the `start-local.sh` script, you can manually start the frontend and backend components using the following steps.
@@ -193,12 +193,12 @@ As we can see, even if two people are typing to the server, it is able to handle
 and be able to serve both clients with no loss in response throughput
 
 ### Deployment
-There is a Dockerfile and a Procfile; both can be used to run the server as a standalone Docker container or 
+There is a Dockerfile and a Procfile; both can be used to run the server as a standalone Docker container or
 within your own solution. I would recommend using Docker Compose for easy deployment on Kubernetes via Helm charts,
-as well as for creating easy replicas with VTCL/HZTL scaling. Remember to handle ports and SSL if your solution 
+as well as for creating easy replicas with VTCL/HZTL scaling. Remember to handle ports and SSL if your solution
 requires it.
 
-**NOTE: This server backend is not secure.** It currently isn't using WebSocket Secure due to localhost being HTTP 
+**NOTE: This server backend is not secure.** It currently isn't using WebSocket Secure due to localhost being HTTP
 and a lack of core security features for ease of local running.
 
 I recommend adding something like this to the frontend:
@@ -208,15 +208,15 @@ const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 const wsUrl = `${wsProtocol}://${window.location.hostname}/ws`;
 ```
 
-Additionally, I advise implementing origin checking for incoming server requests and securing your API using JWT tokens, 
-OAuth's Bearer Tokens, API Keys, etc. Consider also implementing rate limiting for WebSocket connections and handling 
+Additionally, I advise implementing origin checking for incoming server requests and securing your API using JWT tokens,
+OAuth's Bearer Tokens, API Keys, etc. Consider also implementing rate limiting for WebSocket connections and handling
 reconnections securely as preventive measures against DDoS attacks.
 
 ### Thoughts and Future Improvements
-This was a fun implementation, mixing two technologies that you want to use together but are not clearly defined, 
+This was a fun implementation, mixing two technologies that you want to use together but are not clearly defined,
 especially in a scenario where both are utilized without limitations on each other.
 
-There are many improvements that could be made, but they are not implemented to maintain simplicity and avoid potential 
+There are many improvements that could be made, but they are not implemented to maintain simplicity and avoid potential
 lockout for future users. I would be willing to create a new template for different use cases or add to this repository,
 possibly including:
 
