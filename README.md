@@ -140,7 +140,7 @@ fastapi              # Fast web framework to handle our APIs
 uvicorn              # ASGI server for serving FastAPI applications
 websockets           # core WebSocket server and client library
 python-dotenv        # reads key-value pairs from a `.env` file and sets them as environment variables
-langchain-fireworks  # LangChain x Fireworks implementation to use Firework.AI's ChatModel with Langchain
+langchain-openai     # LangChain x OpenAI's implementation to use OpenAI's ChatModel within Langchain ecosystem
 langgraph            # An awesome talking parrot that shoots webs :D
 colorama             # used for coloring logs
 ```
