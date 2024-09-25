@@ -3,7 +3,7 @@
 # LangGraph Python Backend w/ React TypeScript Frontend
 
 ## 🤓 TLDR
-_LangGraph_ backend using FastAPI and websockets to communicate with _React_ showing model generating
+_LangGraph_ backend using FastAPI and WebSockets to communicate with _React_ showing model generating
 responses and streaming, made easy as a template. Run via `pip install -r requirements.txt` then
 `./start-local.sh --backend`. Check out more info below!
 
@@ -84,9 +84,9 @@ actions within that specific side. For example, if the event kind is `on_chat_mo
 the response to the client. Or if the client receives any changes in the socket connection, it will adjust and
 render or log accordingly.
 
-Our communication exchanges:
+Our communication exchange:
 ![coms xc](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom.png)
-Find out more about what each function does from the comments in the codebase, or see the exchange in action in the [demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo).
+Find out more about what each function does from the comments in the codebase, or see the exchange in action in the [demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-demo).
 
 ### 🖥️ Frontend
 The frontend has a few features to get the ball rolling:
@@ -115,8 +115,8 @@ I tried to keep the backend very slim while still being functional. It uses Fast
     INFO:     server.py:34    - {"timestamp": "YYYY-MM-DDTHH:MM:SS.MS", "uuid": "nearer-zebra-one-worker", "received": {"uuid": "oldest-honor-create-card", "message": "what is e?", "init": false}}
     INFO:     graph.py:86     - {"timestamp": "YYYY-MM-DDTHH:MM:SS.MS", "uuid": "nearer-zebra-one-worker", "llm_method": "on_chat_model_end", "sent": "2.718281828459045"}
     ```
-  - Consistent logging format and output in JSON allow easy import into any observability system, designated by timestamp in timeseries, conversational UUID, or LLM function call.
-  - [Logging demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo)
+  - Consistent logging format and output in JSON allow easy import into any observability system, designated by timestamp in time-series, conversational UUID, or LLM function call.
+  - [Logging demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-demo)
 
 - **Simple Graph**
   - This graph example is a generic call model without tool calling but can easily be replaced with your own graph.
@@ -133,7 +133,7 @@ I tried to keep the backend very slim while still being functional. It uses Fast
 I tried to make setup and running as simple as possible locally
 This script is used to start the frontend and backend of the application. It accepts various command-line options to control which components to run and their respective configurations.
 
-before you being please make sure you `pip install -r requirements.txt`, I recommend using your personal flavor of virtual env, I didn't automate pip setup due to user assumption.
+before you begin please make sure you `pip install -r requirements.txt`, I recommend using your personal flavor of virtual env, I didn't automate pip setup due to user assumption.
 ```
 # required libraries
 fastapi              # Fast web framework to handle our APIs
@@ -209,20 +209,20 @@ I would recommend using 2 different terminal tabs.
    ```
 
 ### 🎥 Demo
-![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom--dual-demo.gif)
-As we can see above, even if two people are typing to the hosted server, it is able to handle it in a non-blocking fashion
-and be able to serve both clients with no loss in response throughput.
+![par-atom-dual-demo](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom--dual-demo.gif)
+As we can see above, even if two people are typing to the hosted server, it can handle it in a non-blocking fashion
+and serve both clients with no loss in response throughput.
 
 Below is what it would look like from the server, probably not in RGB :D
-![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-cmd-demo.gif)
+![par-atom-cmd-demo](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-cmd-demo.gif)
 
 ### 🚢 Deployment
 There is a Dockerfile and a Procfile; both can be used to run the server as a standalone Docker container or
-within your own solution. I would recommend using Docker Compose for easy deployment on Kubernetes via Helm charts,
+within your solution. I would recommend using Docker Compose for easy deployment on Kubernetes via Helm charts,
 as well as for creating easy replicas with VTCL/HZTL scaling. Remember to handle ports and SSL if your solution
 requires it.
 
-**NOTE: This server backend is not secure.** It currently isn't using WebSocket Secure due to localhost being HTTP
+**NOTE: This server's backend is not secure.** It currently isn't using WebSocket Secure due to localhost being HTTP
 and a lack of core security features for ease of local running.
 
 I recommend adding something like this to the frontend:
@@ -249,7 +249,7 @@ possibly including:
 - Sharing conversations or looking them up by conversation ID.
 - Handling grouping of conversations by user would require some form of distinction between users.
 
-These are improvements I do want to do in the future:
+These are improvements I do want to make in the future:
 - testing for both frontend and backend
 - A Kubernetes (K8s) Docker Compose setup
 - if the backend gets too big, probably put it in a folder
