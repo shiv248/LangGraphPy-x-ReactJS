@@ -1,7 +1,7 @@
-##This file will build frontend and copy static files to backend everytime
+##This file is 2 stages, it will build frontend and copy static files to backend everytime
 
 # Step 1: Build the React frontend
-FROM node:16 AS build-frontend
+FROM node:22 AS build-frontend
 
 # Set working directory inside the container for the frontend
 WORKDIR /app/frontend
@@ -19,7 +19,7 @@ COPY ./frontend/ ./
 RUN npm run build
 
 # Step 2: Set up the FastAPI backend
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 # Set the working directory for the backend
 WORKDIR /app
