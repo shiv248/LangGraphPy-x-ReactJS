@@ -36,10 +36,10 @@ except Exception as e:
     logger.fatal(f"Fatal Error: Failed to initialize model: {e}")
     sys.exit(1)
 
-# Define a custom state dictionary with messages that will hold conversation state
+# This is the default state same as "MessageState" TypedDict but allows us accessibility to custom keys
 class GraphsState(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
-    # Custom keys for additional user data can be added here such as - conversation_id: str
+    # Custom keys for additional data can be added here such as - conversation_id: str
 
 graph = StateGraph(GraphsState)
 
@@ -50,7 +50,7 @@ async def conditional_check(state: GraphsState, config: RunnableConfig):
     # Try it out! ask the model any of the keywords below and see what happens in the frontend
     messages = state["messages"]
     msg = messages[-1].content
-    keywords = ["LangChain", "langchain", "LangGraph", "Langgraph", "langgraph"]
+    keywords = ["LangChain", "langchain", "Langchain", "LangGraph", "Langgraph", "langgraph"]
     if any(keyword in msg for keyword in keywords):
         # we pass RunnableConfig in case the server is running on Python 3.10 or earlier
         # https://langchain-ai.github.io/langgraph/how-tos/streaming-tokens/#:~:text=Note%20on%20Python%20%3C%203.11
