@@ -22,7 +22,7 @@ responses and streaming, made easy as a template. Run via `pip install -r requir
 ## Background
 As _LangGraph_ develops, there will be a need to establish the optimal way to approach a seamless interaction
 between _LangGraph_ and any frontend framework. A key aspect of UI in a chat setting with LLMs is ensuring
-that the bot is _Actively_ working on the response you sent it. Acknowledgement can take various forms, such
+that the bot is _Actively_ working on the response you sent it. Acknowledgment can take various forms, such
 as a visual aid like a spinner, a toast, a status/progress bar, or streaming the tokens as they are being generated.
 This is a template designed to merge core concepts between frontend and backend to provide a great  user
 experience for someone who doesn't have technical knowledge of LLMs and their limitations.
@@ -30,7 +30,7 @@ experience for someone who doesn't have technical knowledge of LLMs and their li
 I found great success with the streaming approach to indicate that the LLM acknowledged my message and
 is generating a response. I used WebSockets to handle the connection and communication between the frontend
 and backend, which allowed for easy integration of _LangChain_'s [asynchronous streaming events](https://python.langchain.com/docs/how_to/streaming/#using-stream-events)
-and _React_'s useEffect hook. This setup allows the application to wait for responses from the bot while
+and _React_'s [useEffect hook](https://react.dev/reference/react/useEffect). This setup allows the application to wait for responses from the bot while
 simultaneously streaming the tokens as they are generated. I aimed to make it as simple and well-documented
 as possible for anyone to clone, start, and get going on this project, including a drop-in replacement
 for your LangGraph runnable in `graph.py`, and only needing the `useWebSocket.ts` implementation for any frontend.
