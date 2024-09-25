@@ -1,7 +1,7 @@
 body {
-  background-color: #001524;
-  color: #fbfef9;
-  font-family: "system-ui", Courier, monospace;
+  background-color: #001524; /* Dark background for the app */
+  color: #fbfef9; /* Light text for readability */
+  font-family: "system-ui", Courier, monospace; /* Monospace font for a terminal-like feel */
   margin: 0;
   padding: 0;
 }
@@ -10,29 +10,29 @@ body {
   max-width: 600px;
   margin: 2vh auto;
   padding: 5px 20px 20px 20px;
-  border: 5px solid #0e79b2;
+  border: 5px solid #0e79b2; /* Border matching theme color */
   border-radius: 10px;
-  background: #0b0909;
+  background: #0b0909; /* Dark background for the chat box */
 }
 
 .chat-header {
   display: grid;
-  grid-auto-flow: column;
+  grid-auto-flow: column; /* Header layout with title and status indicator */
   margin-bottom: 5px;
 }
 
 .chat-header b {
   color: #ffffff;
-  margin-left: -40px;
+  margin-left: -40px; /* Offset title to balance the layout */
 }
 
 .connection-status {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 50%; /* Circle indicator */
   background-color: #d32f2f; /* Default: Red (offline) */
   border: 2px solid #ffffff;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; /* Smooth status change */
   margin-top: 3px;
 }
 
@@ -46,22 +46,22 @@ body {
 
 .chat-container {
   display: flex;
-  flex-direction: column;
-  height: 85vh;
-  background: #1e1e1e;
+  flex-direction: column; /* Vertical stacking for messages and input */
+  height: 85vh; /* Dynamic height for the chat container */
+  background: #1e1e1e; /* Slightly lighter than the app background */
   border: 2px solid #0e79b2;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: hidden; /* Hide overflow for cleaner layout */
 }
 
 .messages {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
+  flex: 1; /* Take up available space */
+  overflow-y: auto; /* Enable scrolling */
   padding: 10px;
   scrollbar-width: thin;
-  scrollbar-color: #ffffff #191923;
+  scrollbar-color: #ffffff #191923; /* Custom scrollbar colors */
 }
 
 .messages::-webkit-scrollbar {
@@ -69,11 +69,11 @@ body {
 }
 
 .messages::-webkit-scrollbar-track {
-  background: #191923;
+  background: #191923; /* Dark scrollbar bg */
 }
 
 .messages::-webkit-scrollbar-thumb {
-  background-color: #ffffff;
+  background-color: #ffffff; /* White scrollbar thumb */
   border-radius: 10px;
   border: 2px solid #191923;
 }
@@ -84,31 +84,31 @@ body {
 
 .message {
   display: inline-block;
-  max-width: 80%;
+  max-width: 80%; /* Prevent messages from stretching too wide */
   padding: 10px;
   border-radius: 10px;
   background: #0d0b0b;
-  border: 2px solid #0e79b2;
-  color: #fbfef9;
+  border: 2px solid #0e79b2; /* Consistent border color */
+  color: #fbfef9; /* Light text for readability */
   font-size: 14px;
   margin-bottom: 10px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+  word-wrap: break-word; /* Allow messages to wrap */
+  white-space: pre-wrap; /* Preserve newlines */
 }
 
 .message.user {
-  align-self: flex-end;
-  background: #0d0b0b;
+  align-self: flex-end; /* Align user messages to the right */
+  background: #0d0b0b; /* Dark background */
 }
 
 .message.bot {
-  align-self: flex-start;
-  background: #0d0b0b;
+  align-self: flex-start; /* Align bot messages to the left */
+  background: #0d0b0b; /* Dark background */
 }
 
 .chat-form {
   display: flex;
-  border-top: 2px solid #0e79b2;
+  border-top: 2px solid #0e79b2; /* Border to separate input from messages */
 }
 
 .chat-form textarea {
@@ -116,25 +116,25 @@ body {
   padding: 10px;
   border: none;
   border-radius: 0;
-  background: #2c2c2c;
-  color: #fbfef9;
+  background: #2c2c2c; /* Darker background for input */
+  color: #fbfef9; /* Light text */
   font-size: 14px;
-  font-family: "system-ui", Courier, monospace;
-  resize: none;
+  font-family: "system-ui", Courier, monospace; /* Monospace font for input */
+  resize: none; /* Disable manual resizing */
   height: 50px;
   line-height: 1.4;
 }
 
 .chat-form button {
   padding: 10px;
-  background: #0e79b2;
+  background: #0e79b2; /* Button color matching the theme */
   color: #fbfef9;
   border: none;
-  cursor: pointer;
+  cursor: pointer; /* Pointer cursor on hover */
   font-size: 14px;
-  transition: background 0.3s;
+  transition: background 0.3s; /* Smooth hover effect */
 }
 
 .chat-form button:hover {
-  background: #0c5a8a;
+  background: #0c5a8a; /* Darker shade on hover */
 }
