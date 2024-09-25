@@ -2,24 +2,24 @@
 
 # LangGraph Python Backend w/ React TypeScript Frontend
 
-## TLDR
+## 🤓 TLDR
 _LangGraph_ backend using FastAPI and websockets to communicate with _React_ showing model generating
 responses and streaming, made easy as a template. Run via `pip install -r requirements.txt` then
 `./start-local.sh --backend`. Check out more info below!
 
-- [Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#background)
-- [Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#project-overview)
-- [Communication](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#communication)
-- [Frontend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#frontend)
-- [Backend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#backend)
-- [Let's Run It](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#lets-get-started)
-  - [Automated Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#automated-starting)
-  - [Manual Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#starting-the-application-manually)
-- [Demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo)
-- [Deployment](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#deployment)
-- [Thoughts and Future Improvements](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#thoughts-and-future-improvements)
+- [🏛 Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#background)
+- [🔍 Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#project-overview)
+- [📡 Communication](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#communication)
+- [🖥️ Frontend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#frontend)
+- [️🛠️ Backend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#backend)
+- [🚀 Let's Run It](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#lets-get-started)
+  - [🤖 Automated Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#automated-starting)
+  - [🖐 ️Manual Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#starting-the-application-manually)
+- [🎥 Demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo)
+- [🚢 Deployment](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#deployment)
+- [💡 Thoughts and Future Improvements](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#thoughts-and-future-improvements)
 
-## Background
+## 🏛 Background
 As _LangGraph_ develops, there will be a need to establish the optimal way to approach a seamless interaction
 between _LangGraph_ and any frontend framework. A key aspect of UI in a chat setting with LLMs is ensuring
 that the bot is _Actively_ working on the response you sent it. Acknowledgment can take various forms, such
@@ -35,7 +35,7 @@ simultaneously streaming the tokens as they are generated. I aimed to make it as
 as possible for anyone to clone, start, and get going on this project, including a drop-in replacement
 for your LangGraph runnable in `graph.py`, and only needing the `useWebSocket.ts` implementation for any frontend.
 
-## Project Overview
+## 🔍 Project Overview
 ```
 Project Tree
 .
@@ -70,7 +70,7 @@ Project Tree
 └── start-local.sh         # Shell script to start the application locally (backend or frontend)
 ```
 
-### Communication
+### 📡 Communication
 
 The WebSocket connection allows real-time, bidirectional communication between the React frontend
 and the FastAPI backend server, continuously receiving messages without having to reload or make repeated requests.
@@ -88,7 +88,7 @@ Our communication exchanges:
 ![coms xc](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom.png)
 Find out more about what each function does from the comments in the codebase, or see the exchange in action in the [demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo).
 
-### Frontend
+### �️ Frontend
 The frontend has a few features to get the ball rolling:
 - You can tell that you're connected to the server via an indicator.
 - There is multi-line typing using (`Shift + Enter`) and the normal `Enter` key to send messages.
@@ -98,7 +98,7 @@ The frontend has a few features to get the ball rolling:
 - An explanation of how to use custom LangGraph events to trigger a component on the frontend:
   - Try asking the model about LangChain or LangGraph! :D
 
-### Backend
+### 🛠️ Backend
 I tried to keep the backend very slim while still being functional. It uses FastAPI and Uvicorn to handle asynchronous requests. Some features include:
 
 - **Simple FastAPI Implementation**
@@ -127,9 +127,9 @@ I tried to keep the backend very slim while still being functional. It uses Fast
   - Sends WebSocket responses back to designated clients.
   - Currently handles chat streaming and custom events within your graph, e.g., to trigger frontend components or flags, using `adispatch_custom_event` and `astream_events`.
 
-### Lets Get Started
+### 🚀 Let's Run It
 
-#### Automated Starting
+#### 🤖 Automated Running
 I tried to make setup and running as simple as possible locally
 This script is used to start the frontend and backend of the application. It accepts various command-line options to control which components to run and their respective configurations.
 
@@ -185,11 +185,11 @@ Please read the `start-local.sh` to understand what alias commands are running u
       ./start-local.sh --backend --backend-port 9000
       ```
 - **Usage Restrictions:**
-    - The `--frontend` and `--backend` options cannot be used together. 
+    - The `--frontend` and `--backend` options cannot be used together.
     - Please choose one and then open a new terminal to run the script with the other one.
     - This is due to overlapping blocking client and server consoles, you could put them in background, but it becomes a hassle to `kill $PID` in dev workflow.
 
-#### Starting the Application Manually
+#### 🖐 ️Starting the Application Manually
 If you prefer not to use the `start-local.sh` script, you can manually start the frontend and backend components using the following steps.
 I would recommend using 2 different terminal tabs.
 - For the **frontend**, navigate to the `frontend` directory and install the required packages and run with your flavor of node package manager:
@@ -208,15 +208,15 @@ I would recommend using 2 different terminal tabs.
   uvicorn server:app --host 0.0.0.0 --port 8000 --reload
    ```
 
-### Demo
+### 🎥 Demo
 ![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom--dual-demo.gif)
 As we can see above, even if two people are typing to the hosted server, it is able to handle it in a non-blocking fashion
-and be able to serve both clients with no loss in response throughput. 
+and be able to serve both clients with no loss in response throughput.
 
-Below is what it would look like from the server, probably not in RGB :D 
+Below is what it would look like from the server, probably not in RGB :D
 ![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-cmd-demo.gif)
 
-### Deployment
+### 🚢 Deployment
 There is a Dockerfile and a Procfile; both can be used to run the server as a standalone Docker container or
 within your own solution. I would recommend using Docker Compose for easy deployment on Kubernetes via Helm charts,
 as well as for creating easy replicas with VTCL/HZTL scaling. Remember to handle ports and SSL if your solution
@@ -236,7 +236,7 @@ Additionally, I advise implementing origin checking for incoming server requests
 OAuth's Bearer Tokens, API Keys, etc. Consider also implementing rate limiting for WebSocket connections and handling
 reconnections securely as preventive measures against DDoS attacks.
 
-### Thoughts and Future Improvements
+### 💡 Thoughts and Future Improvements
 This was a fun implementation, mixing two technologies that you want to use together but are not clearly defined,
 especially in a scenario where both can be utilized well without limitations on each other.
 
