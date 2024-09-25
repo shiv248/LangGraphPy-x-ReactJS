@@ -248,4 +248,8 @@ possibly including:
 - Conversations stored in-memory could benefit from a dedicated network database solution.
 - Sharing conversations or looking them up by conversation ID.
 - Handling grouping of conversations by user would require some form of distinction between users.
-- A Kubernetes (K8s) Docker Compose setup.
+
+These are improvements I do want to do in the future:
+- testing for both frontend and backend
+- A Kubernetes (K8s) Docker Compose setup
+- if the backend gets too big, probably put it in a folder
