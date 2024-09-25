@@ -4,7 +4,7 @@ import sys, os
 from typing import Annotated, TypedDict
 
 from dotenv import load_dotenv
-from langchain_fireworks import ChatFireworks
+from langchain_openai import ChatOpenAI
 
 from langchain_core.callbacks import adispatch_custom_event
 from langchain_core.runnables.config import RunnableConfig
@@ -12,9 +12,13 @@ from langgraph.graph import START, END, StateGraph
 from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.checkpoint.memory import MemorySaver
 
+from cust_logger import logger, set_files_message_color
+
+set_files_message_color('MAGENTA')  # Set color for logging in this function
+
 # loads and checks if env var exists before continuing to model invocation
 load_dotenv()
-env_var_key = "FIREWORKS_API_KEY"
+env_var_key = "OPENAI_API_KEY"
 model_path = os.getenv(env_var_key)
 
 # If the API key is missing, log a fatal error and exit the application, no need to run LLM application without model!
@@ -26,11 +30,16 @@ if not model_path:
 # ChatModel vs LLM concept https://python.langchain.com/docs/concepts/#chat-models
 # Avalible ChatModel integrations with LangChain https://python.langchain.com/docs/integrations/chat/
 try:
-    llm = ChatFireworks(
-        model="accounts/fireworks/models/firefunction-v2",
-        temperature=0.0,
-        max_tokens=256
-    )
+    llm = ChatOpenAI(
+    model="gpt-4o",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+    # base_url="...",
+    # organization="...",
+    # other params...
+)
 except Exception as e:
     # Log error if model initialization fails, exits. no vroom vroom :(
     logger.fatal(f"Fatal Error: Failed to initialize model: {e}")
@@ -83,11 +92,9 @@ graph_runnable = graph.compile(checkpointer=memory)
 import json
 from datetime import datetime
 from fastapi import WebSocket
-from cust_logger import logger, set_files_message_color
 
 # Merging WS with LangGraph to invoke the graph and stream results to WebSocket
 async def invoke_our_graph(websocket: WebSocket, data: str, user_uuid: str):
-    set_files_message_color('MAGENTA')  # Set color for logging in this function
     initial_input = {"messages": data}
     thread_config = {"configurable": {"thread_id": user_uuid}}  # Pass users conversation_id to manage chat memory on server side
     final_text = ""  # accumulate final output to log, rather then each token

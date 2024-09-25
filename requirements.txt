@@ -2,6 +2,6 @@ fastapi
 uvicorn
 websockets
 python-dotenv
-langchain-fireworks
-langgraph
 colorama
+langchain-openai
+langgraph
