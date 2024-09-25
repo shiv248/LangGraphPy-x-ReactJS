@@ -5,7 +5,7 @@
 ## TLDR
 _LangGraph_ backend using FastAPI and websockets to communicate with _React_ showing model generating
 responses and streaming, made easy as a template. Run via `pip install -r requirements.txt` then
-`./start-local.sh --backend --build`. Check out more info below!
+`./start-local.sh --backend`. Check out more info below!
 
 - [Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#background)
 - [Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#project-overview)
