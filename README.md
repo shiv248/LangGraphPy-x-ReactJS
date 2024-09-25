@@ -1,4 +1,4 @@
-![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/8f73de1351bd3701e94d21e5381b90d82c4bacda/par-atom-logo.svg)
+![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-logo.svg)
 
 # LangGraph Python Backend w/ React TypeScript Frontend
 
@@ -6,6 +6,18 @@
 _LangGraph_ backend using FastAPI and websockets to communicate with _React_ showing model generating
 responses and streaming, made easy as a template. Run via `pip install -r requirements.txt` then
 `./start-local.sh --backend --build`. Check out more info below!
+
+- [Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#background)
+- [Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#project-overview)
+- [Communication](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#communication)
+- [Frontend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#frontend)
+- [Backend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#backend)
+- [Let's Run It](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#lets-get-started)
+  - [Automated Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#automated-starting)
+  - [Manual Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#starting-the-application-manually)
+- [Demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo)
+- [Deployment](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#deployment)
+- [Thoughts and Future Improvements](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#thoughts-and-future-improvements)
 
 ## Background
 As _LangGraph_ develops, there will be a need to establish the optimal way to approach a seamless interaction
@@ -74,7 +86,7 @@ render or log accordingly.
 
 Our communication exchanges:
 ![coms xc](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom.png)
-Find out more about what each function does from the comments in the codebase.
+Find out more about what each function does from the comments in the codebase, or see the exchange in action in the [demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo).
 
 ### Frontend
 The frontend has a few features to get the ball rolling:
@@ -104,6 +116,7 @@ I tried to keep the backend very slim while still being functional. It uses Fast
     INFO:     graph.py:86     - {"timestamp": "YYYY-MM-DDTHH:MM:SS.MS", "uuid": "nearer-zebra-one-worker", "llm_method": "on_chat_model_end", "sent": "2.718281828459045"}
     ```
   - Consistent logging format and output in JSON allow easy import into any observability system, designated by timestamp in timeseries, conversational UUID, or LLM function call.
+  - [Logging demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#demo)
 
 - **Simple Graph**
   - This graph example is a generic call model without tool calling but can easily be replaced with your own graph.
@@ -133,41 +146,48 @@ colorama             # used for coloring logs
 ```
 
 #### `./start-local.sh` Options
-Please read the `start-local.sh` to understand what alias commands are running under the hood
+Please read the `start-local.sh` to understand what alias commands are running under the hood.
+
+**Important**: You cannot use `--frontend` and `--backend` at the same time.
+
 - **`--frontend`**:
-  - Starts the frontend application.
-  - Example:
-    ```bash
-    ./start-local.sh --frontend
-    ```
+    - Starts the frontend application.
+    - Example:
+      ```bash
+      ./start-local.sh --frontend
+      ```
 
 - **`--backend`**:
-  - Starts the backend application.
-  - Example:
-    ```bash
-    ./start-local.sh --backend
-    ```
+    - Starts the backend application and builds the frontend by default before starting the backend.
+    - Example:
+      ```bash
+      ./start-local.sh --backend
+      ```
 
-- **`--build`** optional flag:
-  - Builds the frontend application before starting the backend. This option is only relevant to the backend.
-  - Example:
-    ```bash
-    ./start-local.sh --backend --build
-    ```
+- **`--nobuild`** optional flag:
+    - Skips building the frontend before starting the backend. This option is only relevant when starting the backend.
+    - Example:
+      ```bash
+      ./start-local.sh --backend --nobuild
+      ```
 
 - **`--frontend-port <port>`** optional flag:
-  - Specifies the port on which the frontend application should run. The default port is `3000`.
-  - Example:
-    ```bash
-    ./start-local.sh --frontend --frontend-port 4000
-    ```
+    - Specifies the port on which the frontend application should run. The default port is `3000`.
+    - Example:
+      ```bash
+      ./start-local.sh --frontend --frontend-port 4000
+      ```
 
 - **`--backend-port <port>`** optional flag:
-  - Specifies the port on which the backend application should run. The default port is `8000`.
-  - Example:
-    ```bash
-    ./start-local.sh --backend --backend-port 9000
-    ```
+    - Specifies the port on which the backend application should run. The default port is `8000`.
+    - Example:
+      ```bash
+      ./start-local.sh --backend --backend-port 9000
+      ```
+- **Usage Restrictions:**
+    - The `--frontend` and `--backend` options cannot be used together. 
+    - Please choose one and then open a new terminal to run the script with the other one.
+    - This is due to overlapping blocking client and server consoles, you could put them in background, but it becomes a hassle to `kill $PID` in dev workflow.
 
 #### Starting the Application Manually
 If you prefer not to use the `start-local.sh` script, you can manually start the frontend and backend components using the following steps.
@@ -189,8 +209,12 @@ I would recommend using 2 different terminal tabs.
    ```
 
 ### Demo
-As we can see, even if two people are typing to the server, it is able to handle it in a non-blocking fashion
-and be able to serve both clients with no loss in response throughput
+![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom--dual-demo.gif)
+As we can see above, even if two people are typing to the hosted server, it is able to handle it in a non-blocking fashion
+and be able to serve both clients with no loss in response throughput. 
+
+Below is what it would look like from the server, probably not in RGB :D 
+![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-cmd-demo.gif)
 
 ### Deployment
 There is a Dockerfile and a Procfile; both can be used to run the server as a standalone Docker container or
@@ -214,7 +238,7 @@ reconnections securely as preventive measures against DDoS attacks.
 
 ### Thoughts and Future Improvements
 This was a fun implementation, mixing two technologies that you want to use together but are not clearly defined,
-especially in a scenario where both are utilized without limitations on each other.
+especially in a scenario where both can be utilized well without limitations on each other.
 
 There are many improvements that could be made, but they are not implemented to maintain simplicity and avoid potential
 lockout for future users. I would be willing to create a new template for different use cases or add to this repository,

@@ -22,7 +22,7 @@ done
 
 # Check for conflicting options
 if [ "$RUN_FRONTEND" = true ] && [ "$RUN_BACKEND" = true ]; then
-    echo "ERROR: Cannot run both frontend and backend in same terminal. Please choose one and open a new terminal"
+    echo "ERROR: Cannot run both frontend and backend in same terminal. Please choose one and open a new terminal for the other"
     exit 1
 fi
 
