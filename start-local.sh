@@ -28,7 +28,7 @@ fi
 
 # Function to build the frontend
 build_frontend() {
-    echo "Building frontend using \`npm run build\`..."
+    echo "Building frontend static files using \`npm run build\`..."
     (cd frontend && npm install && npm run build) || { echo "Frontend build failed"; exit 1; }
 }
 
