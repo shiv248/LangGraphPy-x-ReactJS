@@ -3,21 +3,21 @@
 # LangGraph Python Backend w/ React TypeScript Frontend
 
 ## 🤓 TLDR
-_LangGraph_ backend using FastAPI and WebSockets to communicate with _React_ showing model generating
-responses and streaming, made easy as a template. Run via `pip install -r requirements.txt` then
+_LangGraph_ backend using _FastAPI_ and _WebSockets_ to communicate with _React_ frontend, showing model generating
+responses and streaming them, made easy as a template. Run via `pip install -r requirements.txt` then
 `./start-local.sh --backend`. Check out more info below!
 
-- [🏛 Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-background)
-- [🔍 Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-project-overview)
-- [📡 Communication](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-communication)
-- [🖥️ Frontend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#%EF%B8%8F-frontend)
-- [️🛠️ Backend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#%EF%B8%8F-backend)
-- [🚀 Let's Run It](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-lets-run-it)
-  - [🤖 Automated Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-automated-running)
-  - [🖐 ️Manual Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-%EF%B8%8Fstarting-the-application-manually)
-- [🎥 Demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-demo)
-- [🚢 Deployment](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-deployment)
-- [💡 Thoughts and Future Improvements](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-thoughts-and-future-improvements)
+- 🏛 [Background](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-background)
+- 🔍 [Project Overview](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-project-overview)
+- 📡 [Communication](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-communication)
+- 🖥️ [Frontend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#%EF%B8%8F-frontend)
+- 🛠️ [Backend](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#%EF%B8%8F-backend)
+- 🚀 [Let's Run It](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-lets-run-it)
+  - 🤖 [Automated Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-automated-running)
+  - 🖐 ️[Manual Running](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-%EF%B8%8Fstarting-the-application-manually)
+- 🎥 [Demo](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-demo)
+- 🚢 [Deployment](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-deployment)
+- 💡 [Thoughts and Future Improvements](https://github.com/shiv248/LangGraphPy-x-ReactJS?tab=readme-ov-file#-thoughts-and-future-improvements)
 
 ## 🏛 Background
 As _LangGraph_ develops, there will be a need to establish the optimal way to approach a seamless interaction
