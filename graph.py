@@ -28,7 +28,7 @@ if not model_path:
 
 # Initialize the ChatModel LLM
 # ChatModel vs LLM concept https://python.langchain.com/docs/concepts/#chat-models
-# Avalible ChatModel integrations with LangChain https://python.langchain.com/docs/integrations/chat/
+# Available ChatModel integrations with LangChain https://python.langchain.com/docs/integrations/chat/
 try:
     llm = ChatOpenAI(
     model="gpt-4o",
