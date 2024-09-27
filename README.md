@@ -253,3 +253,4 @@ These are improvements I do want to make in the future:
 - testing for both frontend and backend
 - A Kubernetes (K8s) Docker Compose setup
 - if the backend gets too big, probably put it in a folder
+- move to vite template as that's the direction FE is heading
