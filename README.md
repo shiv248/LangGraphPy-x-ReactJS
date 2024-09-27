@@ -1,4 +1,4 @@
-![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-logo.svg)
+![par-atom](https://raw.githubusercontent.com/shiv248/fluffy-dollop/refs/heads/master/par-atom-logo-bg.svg)
 
 # LangGraph Python Backend w/ React TypeScript Frontend
 
